@@ -51,3 +51,39 @@ custom:
     application-denied:
       subject: "Your credit application denied."
       text: "Hello, your application №{applicationId} denied."
+  document:
+    credit-contract: |
+      Credit contract {creditId} from {creditDate}
+      Client's full name: {clientFullName}
+      Client's passport: {clientPassport}
+      Credit Info:
+        amount: {creditAmount}
+        term: {creditTerm}
+        monthly payment: {monthlyPayment}
+        rate: {rate}
+        psk: {psk}
+        services:
+          insurance: {isInsuranceEnabled}
+          salary client: {isSalaryClient}
+    credit-payment-schedule: |
+      Payment schedule for credit contract {creditId} from {applicationCreationDate}
+      Client's full name: {clientFullName}
+      Payment schedule:
+        {paymentSchedule}
+    credit-application: |
+      Credit application {applicationId} from {applicationCreationDate}
+      Client info:
+        full name: {clientFullName}
+        birthdate: {clientBirthdate}
+        gender: {clientGender}
+        passport: {clientPassport}
+        email: {clientEmail}
+        martial status: {clientMartialStatus}
+        dependent amount: {clientDependentAmount}
+        Employment:
+          employment status: {employmentStatus}
+          employer INN (if present): {employerINN}
+          salary: {employmentSalary}
+          employment position: {employmentPosition}
+          work experience (total): {employmentWorkExperienceTotal}
+          work experience (current): {employmentWorkExperienceCurrent}

@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class DocumentService {
 
     @Value("${custom.document.credit-contract}")
@@ -29,9 +28,13 @@ public class DocumentService {
 
     private final static String FILE_EXTENSION = ".txt";
 
-    private final DealClient  dealClient;
+    private final DealClient dealClient;
 
     private Map<String, String> bookmarks;
+
+    public DocumentService(DealClient dealClient) {
+        this.dealClient = dealClient;
+    }
 
     public List<File> createDocuments(Long applicationId) {
         ApplicationDTO application = dealClient.getApplicationById(applicationId).getBody();
