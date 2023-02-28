@@ -1,0 +1,53 @@
+server:
+  port: 8087
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:test}
+    password: ${MAIL_PASSWORD:12345678}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          startls:
+            enable: true
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: 'dossier-consumer'
+    topic:
+      finish-registration: 'finish-registration'
+      create-documents: 'create-documents'
+      send-documents: 'send-documents'
+      send-ses: 'send-ses'
+      credit-issued: 'credit-issued'
+      application-denied: 'application-denied'
+
+client:
+  deal:
+    endpoint: 'http://127.0.0.1:8086/deal'
+
+custom:
+  message:
+    finish-registration:
+      subject: "Finish registration in credit-conveyor"
+      text: "Hello, your loan application №{applicationId} approved! \nNow you should finish registration by the following link: http://localhost:8880/swagger-ui/index.html#/application/finishRegistration"
+    create-document:
+      subject: "Create documents for your loan application"
+      text: "Hello, your loan application №{applicationId} passed all checks! \nNow you should send creating documents request by the following link: http://localhost:8880/swagger-ui/index.html#/document/createDocuments"
+    send-document:
+      subject: "Your loan documents"
+      text: "Hello, here it is your loan documents for application №{applicationId}! \nNow you should send signing documents request by the following link: http://localhost:8880/swagger-ui/index.html#/document/signDocuments"
+    send-ses:
+      subject: "Your Simple Electric Sign"
+      text: "Hello, here it is your Simple Electric Sign code {sesCode} for your application №{applicationId}. \nNow you should send this code to: http://localhost:8880/swagger-ui/index.html#/document/sendSesCode"
+    credit-issued:
+      subject: "Credit issued!"
+      text: "Hello, credit for your application №{applicationId} has already issued! \nMoney will transfer to your account soon. \nThanks!"
+    application-denied:
+      subject: "Your credit application denied."
+      text: "Hello, your application №{applicationId} denied."

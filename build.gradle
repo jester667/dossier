@@ -1,0 +1,71 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.6'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.openapi.generator' version '5.3.1'
+}
+
+group = 'ru.neoflex'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+        exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation ('org.springframework.boot:spring-boot-starter-web')
+    implementation ('org.springframework.kafka:spring-kafka')
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    compileOnly 'org.openapitools:openapi-generator-maven-plugin:5.2.1'
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.1")
+    implementation ('org.springframework.boot:spring-boot-starter-mail:2.7.6')
+}
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$rootDir/src/main/resources/open-api/dossier-dto.yaml".toString()
+    apiPackage = "ru.neoflex.dossier.api"
+    modelPackage = "ru.neoflex.dossier.model"
+    typeMappings = [
+            "double": "java.math.BigDecimal",
+            "date": "java.time.LocalDate",
+            "date-time": "java.time.LocalDateTime",
+            "Date": "LocalDateTime"
+    ]
+    importMappings = [
+            "java.util.Date":  "java.time.LocalDateTime"
+    ]
+    configOptions = [
+            "interfaceOnly": "true",
+            "useBeanValidation": "true",
+            "library": "spring-mvc",
+            "dateLibrary": "java11",
+            "java11": "true",
+            "additionalModelTypeAnnotations": "@lombok.AllArgsConstructor; @lombok.Builder; @lombok.NoArgsConstructor"
+    ]
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.1"
+    }
+}
